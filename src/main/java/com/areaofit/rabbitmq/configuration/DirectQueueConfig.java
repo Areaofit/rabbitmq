@@ -4,6 +4,10 @@ import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * direct 模式：
+ * Todo 总结自己的理解
+ */
 @Configuration
 public class DirectQueueConfig {
 
@@ -36,6 +40,11 @@ public class DirectQueueConfig {
 
     @Bean
     public Binding binding2() {
+        return BindingBuilder.bind(queue2()).to(exchange()).with(QUEUE_1_NAME);
+    }
+
+    @Bean
+    public Binding binding3() {
         return BindingBuilder.bind(queue2()).to(exchange()).with(QUEUE_2_NAME);
     }
 
