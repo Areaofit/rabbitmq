@@ -51,7 +51,7 @@ public class RabbitSendController {
     }
 
     @PutMapping("/topicQueue")
-    @ApiOperation(value = "fanout模式消息发送", notes = "binding1：log.#.error\nbinding2：log.fanout.error", response = ResponseData.class)
+    @ApiOperation(value = "topic模式消息发送", notes = "binding1：log.#.error\nbinding2：log.fanout.error", response = ResponseData.class)
     public ResponseData testTopicQueue(
             @ApiParam(name = "msg", value = "消息内容", required = true)
             @RequestParam(name = "msg", required = true) String msg,
