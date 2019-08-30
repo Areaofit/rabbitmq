@@ -1,9 +1,6 @@
 package com.areaofit.rabbitmq.consumer;
 
-import com.rabbitmq.client.ConfirmCallback;
-import com.rabbitmq.client.Return;
-import com.rabbitmq.client.ReturnCallback;
-import org.springframework.amqp.core.AmqpTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 /**
  * 生产发送消息确认机制：
@@ -23,6 +19,7 @@ import java.io.IOException;
  * 新建 bean 实现 ConfirmCallback 和 ReturnCallback 接口
  *
  */
+@Slf4j
 @Component
 public class SendMsgConfirm implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
@@ -35,17 +32,21 @@ public class SendMsgConfirm implements RabbitTemplate.ConfirmCallback, RabbitTem
         rabbitTemplate.setReturnCallback(this::returnedMessage);
     }
 
+
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (ack) {
-            System.out.println("消息发送成功：" + correlationData);
+            // 发送成功，处理相关业务
+            log.info("消息发送成功！");
         } else {
-            System.out.println("消息发送成功：" + cause);
+            // 消息发送不成功，处理相应业务
+            log.error("消息发送不成功：{}", cause);
         }
     }
 
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-        System.out.println("exchange: " + exchange);
+        log.info("\nmessage:{}, replyCode:{}, replyText:{}, exchange:{}, routingKey:{}",
+                new String(message.getBody()), replyCode, replyText, exchange, routingKey);
     }
 }

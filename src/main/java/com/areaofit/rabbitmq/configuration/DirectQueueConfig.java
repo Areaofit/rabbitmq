@@ -15,37 +15,37 @@ public class DirectQueueConfig {
 
     public final static String QUEUE_2_NAME = "direct.second";
 
-    public final static String DIRECT_EXCHANGE_NAME = "direct";
+    public final static String DIRECT_EXCHANGE_NAME = "direct_exchange_test";
 
     @Bean
-    public Queue queue1() {
+    public Queue directQueue1() {
         return new Queue(QUEUE_1_NAME, true);
     }
 
     @Bean
-    public Queue queue2() {
+    public Queue directQueue2() {
         return new Queue(QUEUE_2_NAME, true);
     }
 
     @Bean
-    public DirectExchange exchange() {
+    public DirectExchange directExchange() {
         DirectExchange exchange = new DirectExchange(DIRECT_EXCHANGE_NAME);
         return exchange;
     }
 
     @Bean
-    public Binding binding1() {
-        return BindingBuilder.bind(queue1()).to(exchange()).with(QUEUE_1_NAME);
+    public Binding directBinding1() {
+        return BindingBuilder.bind(directQueue1()).to(directExchange()).with(QUEUE_1_NAME);
     }
 
     @Bean
-    public Binding binding2() {
-        return BindingBuilder.bind(queue2()).to(exchange()).with(QUEUE_1_NAME);
+    public Binding directBinding2() {
+        return BindingBuilder.bind(directQueue2()).to(directExchange()).with(QUEUE_1_NAME);
     }
 
     @Bean
-    public Binding binding3() {
-        return BindingBuilder.bind(queue2()).to(exchange()).with(QUEUE_2_NAME);
+    public Binding directBinding3() {
+        return BindingBuilder.bind(directQueue2()).to(directExchange()).with(QUEUE_2_NAME);
     }
 
 }
